@@ -46,11 +46,4 @@ describe "the whole thing" do
 end
 
 
-SYMBOLS = ['1', '0', 'A', 'O', 'X', 'N']
 
-#take first symbol in line, do this:
-str = ''
-def parse(sym)
-  str += sym if SYMBOLS.include? sym
-  next
-end

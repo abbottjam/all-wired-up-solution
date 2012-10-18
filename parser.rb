@@ -16,8 +16,22 @@ def parse(file_path)
 end
 end
 
+def open(file_path)
+  File.open(file_path) do |f|
+    arr = f.readlines.map {|str| str.match /^\n/}
+    puts arr.to_s
+  end
+end
+
 describe "parsing" do
   it "represents the circuit as string" do
     parse('files/example.txt').must_equal '0A1X1N'
+  end
+end
+
+describe "opening" do
+  it "creates a list of circuits" do
+    open('files/simple_circuits.txt')
+    #open('files/simple_circuits.txt').size.must_equal 3
   end
 end

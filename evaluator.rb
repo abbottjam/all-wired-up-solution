@@ -8,40 +8,40 @@ require 'minitest/autorun'
                            X------------@
 1-------------|            |
               N------------|
+
+equals '0A1X1N'
 =end
 
-#'0A1X1N'
-def resolve(seq)
-  seq = substitute(seq, '0', 'false')
-  seq = substitute(seq, '1', 'true')
-  seq = substitute(seq, 'A', '&&')
-  seq = substitute(seq, 'X', '^')
-  seq = substitute(seq, 'N', '!')
-  seq = substitute(seq, 'true!', '!true')
+SUBSTITUTIONS = {
+  '0' => 'false',
+  '1' => 'true',
+  'A' => '&&',
+  'O' => '||',
+  'X' => '^',
+  'N' => '!',
+  'true!' => '!true'
+}
+
+def transform(seq)
+  SUBSTITUTIONS.each {|sym, value| seq.gsub!(sym, value)}
+  seq
 end
 
-def substitute(seq, sym, str)
-  seq.gsub!(sym, str)
-end
-
-describe "substituting" do
-  it "substitutes symbol with value" do
-    substitute('0A1X1N', '0', 'false').must_equal 'falseA1X1N'
-  end
-  it "swaps strings" do
-    substitute('false&&true^true!', 'true!', '!true').must_equal 'false&&true^!true'
+describe "transforming input sequence" do
+  it "substitutes symbols with values" do
+    transform('0A1X1N').must_equal 'false&&true^!true'
   end
 end
 
-describe "evaling" do
-  it "evals to value" do
+describe "evaling sequence" do
+  it "evals expression to value" do
     eval('false&&true^!true').must_equal false
   end
 end
 
 describe "the whole thing" do
   it "just works" do
-    eval(resolve('0A1X1N')).must_equal false
+    eval(transform('0A1X1N')).must_equal false
   end
 end
 

@@ -1,16 +1,16 @@
 require './parser.rb'
 require './evaluator.rb'
 
-def do_stuff
-  str = parse('files/example.txt')
-  eval(resolve(str))
+def resolve(path)
+  eval(transform(parse(path)))
 end
 
 require 'minitest/spec'
 require 'minitest/autorun'
 
-describe "test" do
-  it "must work" do
-    do_stuff.must_equal false
+describe "test example circuit" do
+  it "works" do
+    resolve('files/example.txt').must_equal false
   end
 end
+

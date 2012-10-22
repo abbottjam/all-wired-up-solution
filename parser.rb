@@ -33,7 +33,7 @@ def parse_tree(pos, call=0)
   puts "CALL #{call}, POS: #{pos}"
   left = parse_left_subtree(pos, call)
   puts "CALL #{call}, POS: #{pos}"
-  right = parse_right_subtree(pos, call) #pos is modified by the previous function call!
+  right = parse_right_subtree(pos, call) #OMG - immutable datastructures MUST be used with recursion!
   ['(', left, token, right, ')'].join
 end
 
@@ -94,22 +94,26 @@ end
 
 #position -> position
 def left(pos)
-  pos[:col] = pos[:col]-1
-  pos
+  {
+    :row => pos[:row],
+    :col => pos[:col]-1
+  }
 end
 
 #position -> position
 def up(pos)
-  pos[:row] = pos[:row]-1
-  pos
+  {
+    :row => pos[:row]-1,
+    :col => pos[:col]
+  }
 end
 
 #position -> position
 def down(pos)
-  #puts "ROW: #{pos[:row]}"
-  #puts "COL: #{pos[:col]}"
-  pos[:row] = pos[:row]+1
-  pos
+  {
+    :row => pos[:row]+1,
+    :col => pos[:col]
+  }
 end
 
 def is_operator?(token)
@@ -143,9 +147,9 @@ end
 describe "parsing an operand - base case" do
   it "returns the operand" do
     coor = {:row => 0, :col => 0}
-    #@c.parse_tree(coor).must_equal '0'
+    @c.parse_tree(coor).must_equal '0'
     coor = {:row => 2, :col => 0}
-    #@c.parse_tree(coor).must_equal '1'
+    @c.parse_tree(coor).must_equal '1'
   end
 end
 describe "parsing an operator - recursive case" do

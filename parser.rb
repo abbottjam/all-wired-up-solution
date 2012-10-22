@@ -1,8 +1,6 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 
-SYMBOLS = /[10AOXN]/
-
 OPERATORS = ['A', 'O', 'X', 'N']
 OPERANDS = ['1', '0']
 
@@ -20,35 +18,44 @@ class Circuit
 
 # -> string
 def parse
-  root_coor = find_root
-  pos = move_left(root_coor)
-  parse_tree(pos)
+  parse_tree(move_left(find_root))
 end
 
 #position -> string
-def parse_tree(pos, call=0)
-  call += 1
+def parse_tree(pos)
   token = get(pos)
   return token if is_operand? token
-  puts "CALL #{call}, POS: #{pos}"
-  left = parse_left_subtree(pos, call)
-  puts "CALL #{call}, POS: #{pos}"
-  right = parse_right_subtree(pos, call) #OMG - immutable datastructures MUST be used with recursion!
+  left = parse_left_subtree(pos)
+  right = parse_right_subtree(pos)
   ['(', left, token, right, ')'].join
 end
 
-#position -> procedure
-def parse_left_subtree(pos, call)
-  pos = move_up(pos)
-  pos = move_left(pos)
-  parse_tree(pos, call)
+#position -> procedure or string
+def parse_left_subtree(pos)
+  if left_subtree? pos
+    parse_tree(move_left(move_up(pos)))
+  else
+    ''
+  end
 end
 
-#position -> procedure
-def parse_right_subtree(pos, call)
-  pos = move_down(pos)
-  pos = move_left(pos)
-  parse_tree(pos, call)
+#position -> procedure or string
+def parse_right_subtree(pos)
+  if right_subtree? pos
+    parse_tree(move_left(move_down(pos)))
+  else
+    ''
+  end
+end
+
+#position -> boolean
+def left_subtree?(pos)
+  !get(up(pos)).eql? nil
+end
+
+#position -> boolean
+def right_subtree?(pos)
+  !get(down(pos)).eql? nil
 end
 
 #position -> boolean
@@ -57,12 +64,15 @@ def turn?(pos)
   get(left(pos)).eql?('-')
 end
 
-#[x, y] -> token
+#position -> token or nil
 def get(pos)
-  #handle an exception here
   r = pos[:row]
   c = pos[:col]
-  tree[r][c]
+  begin
+    tree[r][c]
+  rescue Exception => e
+    puts e.message
+  end
 end
 
 # -> position
@@ -75,21 +85,23 @@ def find_root
   end
 end
 
+#position -> position or procedure
 def move_left(pos)
   token = get(pos)
   return pos if is_symbol? token
   move_left(left(pos))
 end
 
+#position -> position or procedure
 def move_up(pos)
   return pos if turn? pos
   move_up(up(pos))
 end
 
+#position -> position or procedure
 def move_down(pos)
   return pos if turn? pos
   move_down(down(pos))
-  #{:row => 2, :col => 14}
 end
 
 #position -> position
@@ -166,6 +178,20 @@ describe "meeting a turn" do
     @c.turn?(coor).must_equal true
   end
 end
-
+describe "parsing the whole tree" do
+  it "returns the stringified expression" do
+    @c.parse.must_equal '((0A1)X(1N))'
+  end
+end
+describe "handling the edge case - one subtree is missing" do
+  it "handles it according to the token" do
+    pos = {:row => 5, :col => 14}
+    @c.get(pos).must_equal 'N'
+    above = @c.up(pos)
+    @c.get(above).must_equal '|'
+    below = @c.down(pos)
+    @c.get(below).must_equal nil
+  end
+end
 
 end

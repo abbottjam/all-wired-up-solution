@@ -17,6 +17,13 @@ def parse
   parse_tree(move_left(find_root))
 end
 
+# array -> string
+def parse_trees(root_coordinates) #array of hashes
+  root_coordinates.each do |coor|
+    parse_tree(move_left(coor))
+  end
+end
+
 # -> position
 def find_root
   tree.each_with_index do |str, i|
@@ -25,6 +32,11 @@ def find_root
       return {:row => i, :col => y}
     end
   end
+end
+
+# TODO -> array of positions; input to parse_trees
+def find_roots
+
 end
 
 #position -> string

@@ -141,12 +141,12 @@ describe "parsing the symbol tree" do
  before do
   @c = Circuit.new('files/example.txt')
 end
-describe "find root" do
+describe "finding the root" do
   it "returns the coordinates" do
     @c.find_root.must_equal({:row => 3, :col => 40})
   end
 end
-describe "move left" do
+describe "moving left" do
   it "returns the coordinates of the first operator encountered" do
     root_coor = {:row => 3, :col => 40}
     @c.move_left(root_coor).must_equal({:row => 3, :col => 27})
@@ -154,33 +154,23 @@ describe "move left" do
 end
 describe "parsing an operand - base case" do
   it "returns the operand" do
-    coor = {:row => 0, :col => 0}
-    @c.parse_tree(coor).must_equal '0'
-    coor = {:row => 2, :col => 0}
-    @c.parse_tree(coor).must_equal '1'
+    @c.parse_tree({:row => 0, :col => 0}).must_equal '0'
+    @c.parse_tree({:row => 2, :col => 0}).must_equal '1'
   end
 end
 describe "parsing an operator - recursive case" do
   it "returns the stringified expression" do
-    coor = {:row => 1, :col => 14}
-    @c.parse_tree(coor).must_equal '(0A1)'
+    @c.parse_tree({:row => 1, :col => 14}).must_equal '(0A1)'
   end
 end
-describe "meeting a turn" do
-  it "returns true" do
-    coor = {:row => 0, :col => 14}
-    @c.turn?(coor).must_equal true
-    coor = {:row => 2, :col => 14}
-    @c.turn?(coor).must_equal true
+describe "when meeting a turn: -|" do
+  it "recognizes a turn" do
+    @c.turn?({:row => 0, :col => 14}).must_equal true
+    @c.turn?({:row => 2, :col => 14}).must_equal true
   end
 end
-describe "parsing the whole tree" do
-  it "returns the stringified expression" do
-    @c.parse.must_equal '((0A1)X(1N))'
-  end
-end
-describe "handling the edge case - one subtree is missing" do
-  it "handles it according to the token" do
+describe "addressing individual tokens with get(pos)" do
+  it "returns the token or nil" do
     pos = {:row => 5, :col => 14}
     @c.get(pos).must_equal 'N'
     above = @c.up(pos)
@@ -189,8 +179,21 @@ describe "handling the edge case - one subtree is missing" do
     @c.get(below).must_equal nil
   end
 end
-describe "simple circuits work" do
-  it "works!" do
+describe "meeting a subtree" do
+  it "recognizes subtree" do
+    @c.left_subtree?({:row => 5, :col => 14}).must_equal true
+  end
+  it "recogizes missing subtree - edge case" do
+    @c.right_subtree?({:row => 5, :col => 14}).must_equal false
+  end
+end
+describe "parsing the whole tree" do
+  it "returns the stringified expression" do
+    @c.parse.must_equal '((0A1)X(1N))'
+  end
+end
+describe "parsing simple circuits" do
+  it "parses to correct parenthesized expressions" do
     Circuit.new('files/simple-1.txt').parse.must_equal '(0O1)'
     Circuit.new('files/simple-2.txt').parse.must_equal '((0A1)X(1N))'
     Circuit.new('files/simple-3.txt').parse.must_equal '((0O1)X(1X1))'

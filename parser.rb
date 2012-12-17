@@ -192,7 +192,7 @@ describe "parsing the whole tree" do
     @c.parse.must_equal '((0A1)X(1N))'
   end
 end
-describe "parsing simple circuits" do
+describe "parsing simple circuits separately" do
   it "parses to correct parenthesized expressions" do
     Circuit.new('files/simple-1.txt').parse.must_equal '(0O1)'
     Circuit.new('files/simple-2.txt').parse.must_equal '((0A1)X(1N))'

@@ -9,7 +9,7 @@ require 'minitest/autorun'
 1-------------|            |
               N------------|
 
-equals '0A1X1N'
+equals '((0A1)X(1N))'
 =end
 
 SUBSTITUTIONS = {
@@ -29,19 +29,19 @@ end
 
 describe "transforming input sequence" do
   it "substitutes symbols with values" do
-    transform('0A1X1N').must_equal 'false&&true^!true'
+    transform('((0A1)X(1N))').must_equal '((false&&true)^(!true))'
   end
 end
 
 describe "evaling sequence" do
   it "evals expression to value" do
-    eval('false&&true^!true').must_equal false
+    eval('((false&&true)^(!true))').must_equal false
   end
 end
 
 describe "the whole thing" do
   it "just works" do
-    eval(transform('0A1X1N')).must_equal false
+    eval(transform('((0A1)X(1N))')).must_equal false
   end
 end
 

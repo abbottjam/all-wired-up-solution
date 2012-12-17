@@ -8,18 +8,9 @@ class Circuit
   attr_reader :tree
 
   def initialize(file_path)
-=begin
-    File.open(file_path) do |f|
-     res = ''
-     f.readlines.each {|line|  res << line}
-     res = res.split("\n")
-     @tree = res.select! {|el| !el.eql? ''}
-   end
-=end
-  @tree = IO.read(file_path).split("\n")
-  return @tree unless @tree.include? ""
-  @tree.select! {|line| !line.empty?}
- end
+    @tree = IO.read(file_path).split("\n")
+    @tree.select! {|line| !line.empty?} if @tree.include? ""
+  end
 
 # -> string
 def parse
@@ -200,7 +191,7 @@ describe "handling the edge case - one subtree is missing" do
 end
 describe "simple circuits work" do
   it "works!" do
-    Circuit.new('files/simple-1.txt').parse.must_equal '(0O1)' #no blank line at top - no work
+    Circuit.new('files/simple-1.txt').parse.must_equal '(0O1)'
     Circuit.new('files/simple-2.txt').parse.must_equal '((0A1)X(1N))'
     Circuit.new('files/simple-3.txt').parse.must_equal '((0O1)X(1X1))'
   end

@@ -220,6 +220,12 @@ describe "parsing simple circuits" do
   end
   it "parses several circuits to correct parenthesized expressions" do
     Circuit.new('files/simple_circuits.txt').parse_all.must_equal ['(0O1)', '((0A1)X(1N))', '((0O1)X(1X1))']
+    Circuit.new('files/complex_circuits.txt').parse_all.count.must_equal 8
+    complex = Circuit.new('files/complex_circuits.txt').parse_all
+    complex.each do |c|
+      puts c
+      puts
+    end
   end
 end
 end

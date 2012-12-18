@@ -9,7 +9,7 @@ class Circuit
 
   def initialize(file_path)
     @tree = IO.read(file_path).split("\n")
-    @tree.select! {|line| !line.empty?} if @tree.include? ""
+    #@tree.select! {|line| !line.empty?} if @tree.include? ""
   end
 
 # -> string
@@ -17,9 +17,9 @@ def parse
   parse_tree(move_left(find_root))
 end
 
-# array -> string
-def parse_trees(root_coordinates) #array of hashes
-  root_coordinates.each do |coor|
+# TODO array -> string
+def parse_all
+  find_roots.map do |coor|
     parse_tree(move_left(coor))
   end
 end
@@ -34,9 +34,16 @@ def find_root
   end
 end
 
-# TODO -> array of positions; input to parse_trees
+# TODO -> array of positions
 def find_roots
-
+  roots = []
+  tree.each_with_index do |str, i|
+    if str.match '@'
+      y = str.index '@'
+      roots << {:row => i, :col => y}
+    end
+  end
+  roots
 end
 
 #position -> string
@@ -153,6 +160,7 @@ describe "parsing the symbol tree" do
  before do
   @c = Circuit.new('files/example.txt')
 end
+
 describe "finding the root" do
   it "returns the coordinates" do
     @c.find_root.must_equal({:row => 3, :col => 40})
@@ -204,11 +212,15 @@ describe "parsing the whole tree" do
     @c.parse.must_equal '((0A1)X(1N))'
   end
 end
-describe "parsing simple circuits separately" do
-  it "parses to correct parenthesized expressions" do
+describe "parsing simple circuits" do
+  it "parses single circuits to correct parenthesized expressions" do
     Circuit.new('files/simple-1.txt').parse.must_equal '(0O1)'
     Circuit.new('files/simple-2.txt').parse.must_equal '((0A1)X(1N))'
     Circuit.new('files/simple-3.txt').parse.must_equal '((0O1)X(1X1))'
   end
+  it "parses several circuits to correct parenthesized expressions" do
+    Circuit.new('files/simple_circuits.txt').parse_all.must_equal ['(0O1)', '((0A1)X(1N))', '((0O1)X(1X1))']
+  end
 end
 end
+

@@ -9,7 +9,7 @@ require 'minitest/autorun'
 1-------------|            |
               N------------|
 
-equals '((0A1)X(1N))'
+equals '((0A1)X(N1))'
 =end
 
 SUBSTITUTIONS = {
@@ -18,9 +18,7 @@ SUBSTITUTIONS = {
   'A' => '&&',
   'O' => '||',
   'X' => '^',
-  'N' => '!',
-  'true!' => '!true',
-  'false!' => '!false'
+  'N' => '!'
 }
 
 def transform(seq)
@@ -30,7 +28,7 @@ end
 
 describe "transforming input sequence" do
   it "substitutes symbols with values" do
-    transform('((0A1)X(1N))').must_equal '((false&&true)^(!true))'
+    transform('((0A1)X(N1))').must_equal '((false&&true)^(!true))'
   end
 end
 
@@ -42,7 +40,7 @@ end
 
 describe "the whole thing" do
   it "just works" do
-    eval(transform('((0A1)X(1N))')).must_equal false
+    eval(transform('((0A1)X(N1))')).must_equal false
   end
 end
 

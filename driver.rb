@@ -18,7 +18,7 @@ end
 
 describe "complex circuits evaluate to correct output" do
   it "works, too" do
-    resolve('files/complex_circuits.txt').must_equal ['on', 'off', 'on']
+    resolve('files/complex_circuits.txt').must_equal ["on", "on", "on", "off", "off", "on", "on", "off"]
   end
 end
 

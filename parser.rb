@@ -52,13 +52,11 @@ def parse_tree(pos)
   return token if is_operand? token
   left = parse_left_subtree(pos)
   right = parse_right_subtree(pos)
-
   if token.eql? 'N'
     ['(', token, left, right, ')'].join
   else
     ['(', left, token, right, ')'].join
   end
-
 end
 
 #position -> procedure or string
@@ -215,36 +213,17 @@ describe "meeting a subtree" do
 end
 describe "parsing the whole tree" do
   it "returns the stringified expression" do
-    @c.parse.must_equal '((0A1)X(1N))'
+    @c.parse.must_equal '((0A1)X(N1))'
   end
 end
 describe "parsing simple circuits" do
   it "parses single circuits to correct parenthesized expressions" do
     Circuit.new('files/simple-1.txt').parse.must_equal '(0O1)'
-    Circuit.new('files/simple-2.txt').parse.must_equal '((0A1)X(1N))'
+    Circuit.new('files/simple-2.txt').parse.must_equal '((0A1)X(N1))'
     Circuit.new('files/simple-3.txt').parse.must_equal '((0O1)X(1X1))'
   end
   it "parses several circuits to correct parenthesized expressions" do
-    Circuit.new('files/simple_circuits.txt').parse_all.must_equal ['(0O1)', '((0A1)X(1N))', '((0O1)X(1X1))']
-    Circuit.new('files/complex_circuits.txt').parse_all.count.must_equal 8
-    complex = Circuit.new('files/complex_circuits.txt').parse_all
-    complex.each do |c|
-      puts c
-      puts
-    end
+    Circuit.new('files/simple_circuits.txt').parse_all.must_equal ['(0O1)', '((0A1)X(N1))', '((0O1)X(1X1))']
   end
-
-=begin
-  describe "parsing non-nil chars" do
-    it "parses non-nil chars incorrectly" do
-      c = Circuit.new('files/complex_circuits.txt')
-      char = c.get({:row => 10, :col => 13})
-      puts "CHAR: #{char}"
-      char.must_equal nil
-    end
-  end
-=end
-
 end
 end
-

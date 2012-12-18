@@ -52,7 +52,13 @@ def parse_tree(pos)
   return token if is_operand? token
   left = parse_left_subtree(pos)
   right = parse_right_subtree(pos)
-  ['(', left, token, right, ')'].join
+
+  if token.eql? 'N'
+    ['(', token, left, right, ')'].join
+  else
+    ['(', left, token, right, ')'].join
+  end
+
 end
 
 #position -> procedure or string
@@ -75,12 +81,12 @@ end
 
 #position -> boolean
 def left_subtree?(pos)
-  !get(up(pos)).eql? nil
+  get(up(pos)).eql? '|'
 end
 
 #position -> boolean
 def right_subtree?(pos)
-  !get(down(pos)).eql? nil
+  get(down(pos)).eql? '|'
 end
 
 #position -> token or nil
@@ -227,6 +233,18 @@ describe "parsing simple circuits" do
       puts
     end
   end
+
+=begin
+  describe "parsing non-nil chars" do
+    it "parses non-nil chars incorrectly" do
+      c = Circuit.new('files/complex_circuits.txt')
+      char = c.get({:row => 10, :col => 13})
+      puts "CHAR: #{char}"
+      char.must_equal nil
+    end
+  end
+=end
+
 end
 end
 

@@ -19,7 +19,8 @@ SUBSTITUTIONS = {
   'O' => '||',
   'X' => '^',
   'N' => '!',
-  'true!' => '!true'
+  'true!' => '!true',
+  'false!' => '!false'
 }
 
 def transform(seq)

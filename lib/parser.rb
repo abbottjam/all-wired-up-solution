@@ -7,7 +7,6 @@ class Circuit
 
   def initialize(file_path)
     @tree = IO.read(file_path).split("\n")
-    #@tree.select! {|line| !line.empty?} if @tree.include? ""
   end
 
 # -> string
@@ -15,7 +14,7 @@ def parse
   parse_tree(move_left(find_root))
 end
 
-# TODO array -> string
+# array -> string
 def parse_all
   find_roots.map do |coor|
     parse_tree(move_left(coor))
@@ -32,7 +31,7 @@ def find_root
   end
 end
 
-# TODO -> array of positions
+# -> array of positions
 def find_roots
   roots = []
   tree.each_with_index do |str, i|
@@ -51,9 +50,9 @@ def parse_tree(pos)
   left = parse_left_subtree(pos)
   right = parse_right_subtree(pos)
   if token.eql? 'N'
-    ['(', token, left, right, ')'].join
+    ['(', token, left, right, ')'].join #preorder
   else
-    ['(', left, token, right, ')'].join
+    ['(', left, token, right, ')'].join #inorder
   end
 end
 

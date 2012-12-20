@@ -60,8 +60,6 @@ end
 def parse_left_subtree(pos)
   if left_subtree? pos
     parse_tree(move_left(move_up(pos)))
-  else
-    ''
   end
 end
 
@@ -69,8 +67,6 @@ end
 def parse_right_subtree(pos)
   if right_subtree? pos
     parse_tree(move_left(move_down(pos)))
-  else
-    ''
   end
 end
 

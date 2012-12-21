@@ -3,12 +3,6 @@ Solution for [All Wired Up][awu], a puzzle from PuzzleNode.
 Recursive methods; functions that return values; immutable data structures;
 data-centric programming; lists and trees. Simple things that work.
 
-Thank God I discovered Lisp, SICP, Clojure, and Rich Hickey. This solution would have
-been a lot worse without your influence. Here's a little haiku about what I mean:
-
-_now, there's no urge to define a class  
-each time I need to pass a gas._
-
 [awu]:    http://puzzlenode.com/puzzles/18/comments
 
 

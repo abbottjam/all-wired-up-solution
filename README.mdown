@@ -1,4 +1,4 @@
-Solution for [All Wired Up], a puzzle from PuzzleNode[awu].
+Solution for [All Wired Up][awu], a puzzle from PuzzleNode.
 
 Recursive methods; functions that return values; immutable data structures;
 data-centric programming; lists and trees. Simple things that work.

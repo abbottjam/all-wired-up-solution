@@ -14,7 +14,7 @@ def parse
   parse_tree(move_left(find_root))
 end
 
-# array -> string
+# -> array of expressions
 def parse_all
   find_roots.map do |coor|
     parse_tree(move_left(coor))

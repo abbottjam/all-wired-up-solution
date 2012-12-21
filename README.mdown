@@ -6,8 +6,8 @@ data-centric programming; lists and trees. Simple things that work.
 Thank God I discovered Lisp, SICP, Clojure, and Rich Hickey. This solution would have
 been a lot worse without your influence. Here's a little haiku about what I mean:
 
-_Now, there's no urge to define a class  
-Each time I need to pass a gas._
+_now, there's no urge to define a class  
+each time I need to pass a gas._
 
 [awu]:    http://puzzlenode.com/puzzles/18/comments
 

@@ -56,17 +56,21 @@ def parse_tree(pos)
   end
 end
 
-#position -> procedure
+#position -> procedure or string
 def parse_left_subtree(pos)
   if left_subtree? pos
     parse_tree(move_left(move_up(pos)))
+  else
+    ''
   end
 end
 
-#position -> procedure
+#position -> procedure or string
 def parse_right_subtree(pos)
   if right_subtree? pos
     parse_tree(move_left(move_down(pos)))
+  else
+    ''
   end
 end
 

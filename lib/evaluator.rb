@@ -19,6 +19,6 @@ SUBSTITUTIONS = {
 }
 
 def transform(seq)
-  SUBSTITUTIONS.each {|sym, value| seq.gsub!(sym, value)}
+  SUBSTITUTIONS.each { |sym, value| seq.gsub!(sym, value) }
   seq
 end

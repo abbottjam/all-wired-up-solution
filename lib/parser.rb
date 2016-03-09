@@ -26,7 +26,7 @@ class Circuit
     tree.each_with_index do |str, i|
       if str.match '@'
         y = str.index '@'
-        return {:row => i, :col => y}
+        return { :row => i, :col => y }
       end
     end
   end
@@ -37,7 +37,7 @@ class Circuit
     tree.each_with_index do |str, i|
       if str.match '@'
         y = str.index '@'
-        roots << {:row => i, :col => y}
+        roots << { :row => i, :col => y }
       end
     end
     roots

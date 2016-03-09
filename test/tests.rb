@@ -35,40 +35,40 @@ describe "Parser tests" do
 
     describe "finding the root" do
       it "returns the coordinates" do
-        @c.find_root.must_equal({:row => 3, :col => 40})
+        @c.find_root.must_equal({ :row => 3, :col => 40 })
       end
     end
 
     describe "moving left" do
       it "returns the coordinates of the first operator encountered" do
-        root_coor = {:row => 3, :col => 40}
-        @c.move_left(root_coor).must_equal({:row => 3, :col => 27})
+        root_coor = { :row => 3, :col => 40  }
+        @c.move_left(root_coor).must_equal({ :row => 3, :col => 27 })
       end
     end
 
     describe "parsing an operand - base case" do
       it "returns the operand" do
-        @c.parse_tree({:row => 0, :col => 0}).must_equal '0'
-        @c.parse_tree({:row => 2, :col => 0}).must_equal '1'
+        @c.parse_tree({ :row => 0, :col => 0 }).must_equal '0'
+        @c.parse_tree({ :row => 2, :col => 0 }).must_equal '1'
       end
     end
 
     describe "parsing an operator - recursive case" do
       it "returns the stringified expression" do
-        @c.parse_tree({:row => 1, :col => 14}).must_equal '(0A1)'
+        @c.parse_tree({ :row => 1, :col => 14 }).must_equal '(0A1)'
       end
     end
 
     describe "when meeting a turn: -|" do
       it "recognizes a turn" do
-        @c.turn?({:row => 0, :col => 14}).must_equal true
-        @c.turn?({:row => 2, :col => 14}).must_equal true
+        @c.turn?({ :row => 0, :col => 14 }).must_equal true
+        @c.turn?({ :row => 2, :col => 14 }).must_equal true
       end
     end
 
     describe "addressing individual tokens with get(pos)" do
       it "returns the token or nil" do
-        pos = {:row => 5, :col => 14}
+        pos = { :row => 5, :col => 14 }
         @c.get(pos).must_equal 'N'
         above = @c.up(pos)
         @c.get(above).must_equal '|'
@@ -79,10 +79,10 @@ describe "Parser tests" do
 
     describe "meeting a subtree" do
       it "recognizes subtree" do
-        @c.left_subtree?({:row => 5, :col => 14}).must_equal true
+        @c.left_subtree?({ :row => 5, :col => 14 }).must_equal true
       end
       it "recogizes missing subtree - edge case" do
-        @c.right_subtree?({:row => 5, :col => 14}).must_equal false
+        @c.right_subtree?({ :row => 5, :col => 14 }).must_equal false
       end
     end
 
